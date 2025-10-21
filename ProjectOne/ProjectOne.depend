@@ -1,0 +1,16 @@
+# depslib dependency file v1.0
+1761017781 source:c:\users\nicol\onedrive\Área de trabalho\projectone\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1761072606 source:g:\_nicolau\projectone\projectone\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1761081784 source:c:\users\nicol\downloads\projectone\projectone\projectone\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
