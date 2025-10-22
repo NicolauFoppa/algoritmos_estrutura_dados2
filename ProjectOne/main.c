@@ -38,7 +38,7 @@ typedef struct {
 
 
 // ----------------------------
-// FUN«’ES UTILIT¡RIAS
+// FUN√á√ïES UTILIT√ÅRIAS
 // ----------------------------
 int compararPedidos(const void *a, const void *b) {
     return strncmp(((Pedido*)a)->order_id, ((Pedido*)b)->order_id, 20);
@@ -63,7 +63,7 @@ void trim_whitespace(char *str) {
 }
 
 // ------------------------------------------
-// FUN«’ES DE IMPORTA«√O (BUG DO SSCANF CORRIGIDO)
+// FUN√á√ïES DE IMPORTA√á√ÉO (BUG DO SSCANF CORRIGIDO)
 // ------------------------------------------
 void processar_pedidos_IMPORTADOR() {
     const char *txt_file = "pedidos_unicos_corrigido_status.txt";
@@ -198,7 +198,7 @@ void processar_joias_IMPORTADOR() {
 }
 
 // ----------------------------
-// FUN«’ES DE ORDENA«√O E REORGANIZA«√O
+// FUN√á√ïES DE ORDENA√á√ÉO E REORGANIZA√á√ÉO
 // ----------------------------
 void ordenarPedidos(FILE *fp) {
     fseek(fp, 0, SEEK_END);
@@ -245,7 +245,7 @@ void ordenarJoias(FILE *fp) {
 }
 
 // ----------------------------
-// CRIA«√O DE ÕNDICES
+// CRIA√á√ÉO DE √çNDICES
 // ----------------------------
 void criarIndicePedidos(FILE *fp, FILE *fi) {
     Pedido p;
@@ -300,7 +300,7 @@ void criarIndiceJoias(FILE *fp, FILE *fi) {
 }
 
 // ----------------------------
-// PESQUISA BIN¡RIA NO ÕNDICE
+// PESQUISA BIN√ÅRIA NO √çNDICE
 // ----------------------------
 int pesquisaBinariaIndice(FILE *fi, const char *chave, Indice *resultado) {
     Indice idx;
@@ -308,7 +308,7 @@ int pesquisaBinariaIndice(FILE *fi, const char *chave, Indice *resultado) {
     long n_registros_idx;
 
     if(fi == NULL) {
-        printf("ERRO: Ponteiro de arquivo de Ìndice nulo na pesquisa.\n");
+        printf("ERRO: Ponteiro de arquivo de √≠ndice nulo na pesquisa.\n");
         return 0;
     }
 
@@ -329,7 +329,7 @@ int pesquisaBinariaIndice(FILE *fi, const char *chave, Indice *resultado) {
         meio = (inicio + fim) / 2;
         fseek(fi, meio * sizeof(Indice), SEEK_SET);
         if(fread(&idx, sizeof(Indice), 1, fi) != 1) {
-            printf("ERRO ao ler o arquivo de Ìndice no meio da busca.\n");
+            printf("ERRO ao ler o arquivo de √≠ndice no meio da busca.\n");
             return 0;
         }
 
@@ -349,7 +349,7 @@ int pesquisaBinariaIndice(FILE *fi, const char *chave, Indice *resultado) {
 }
 
 // ------------------------------------------
-// FUN«√O AUXILIAR DE BUSCA
+// FUN√á√ÉO AUXILIAR DE BUSCA
 // ------------------------------------------
 long buscarPosicaoPedido(FILE *fp, FILE *fi, const char *order_id) {
     Indice idx_bloco_inicial;
@@ -491,7 +491,7 @@ void consultarJoia(FILE *fp, FILE *fi, const char *product_id) {
         Joia j;
         fseek(fp, pos, SEEK_SET);
         fread(&j, sizeof(Joia), 1, fp);
-        printf("\nJoia encontrada:\nID: %s\nCategoria: %s\nMarca: %s\nValor: %.2f\nGÍnero: %c\n\n",
+        printf("\nJoia encontrada:\nID: %s\nCategoria: %s\nMarca: %s\nValor: %.2f\nG√™nero: %c\n\n",
                j.product_id, j.category_alias, j.brand_id, j.price_usd, j.gender);
     } else {
         printf("Joia %s nao encontrada.\n", product_id);
@@ -552,7 +552,7 @@ int contarPedidosPorJoia(FILE *fpPedidos, const char *product_id_busca) {
 }
 
 // ----------------------------
-// INSER«√O
+// INSER√á√ÉO
 // ----------------------------
 void inserirPedido(FILE *fpPedidos, FILE *idxPedidos) {
     if(fpPedidos == NULL || idxPedidos == NULL) {
@@ -603,7 +603,7 @@ void inserirJoia(FILE *fpJoias, FILE *idxJoias) {
 }
 
 // ----------------------------
-// REMO«√O
+// REMO√á√ÉO
 // ----------------------------
 void removerPedido(FILE *fpPedidos, FILE *idxPedidos, const char *order_id) {
     long pos = buscarPosicaoPedido(fpPedidos, idxPedidos, order_id);
@@ -616,7 +616,7 @@ void removerPedido(FILE *fpPedidos, FILE *idxPedidos, const char *order_id) {
         fseek(fpPedidos, pos, SEEK_SET);
         fwrite(&p, sizeof(Pedido), 1, fpPedidos);
         criarIndicePedidos(fpPedidos, idxPedidos);
-        printf("Pedido %s removido logicamente. Õndice atualizado.\n", order_id);
+        printf("Pedido %s removido logicamente. √çndice atualizado.\n", order_id);
     } else {
         printf("Pedido %s nao encontrado para remocao.\n", order_id);
     }
@@ -640,7 +640,7 @@ void removerJoia(FILE *fpJoias, FILE *idxJoias, const char *product_id) {
 }
 
 // ----------------------------
-// ALTERA«√O
+// ALTERA√á√ÉO
 // ----------------------------
 void alterarPedido(FILE *fpPedidos, FILE *idxPedidos, const char *order_id) {
     long pos = buscarPosicaoPedido(fpPedidos, idxPedidos, order_id);
@@ -653,20 +653,37 @@ void alterarPedido(FILE *fpPedidos, FILE *idxPedidos, const char *order_id) {
         printf("\n--- ALTERANDO PEDIDO %s ---\n", p.order_id);
         int nova_qtde;
         float novo_valor;
+        char novo_product_id[20];
+        char novo_gender;
+
+
+        printf("Product id (Atual: %s): ", p.user_id);
+        scanf("%19s", novo_product_id);
+        getchar();
+
+        strcpy(p.user_id, novo_product_id);
 
         printf("Quantidade (Atual: %d): ", p.quantity);
         scanf("%d", &nova_qtde);
         p.quantity = nova_qtde;
+        getchar();
 
         printf("Valor (Atual: %.2f): ", p.price_usd);
         scanf("%f", &novo_valor);
         p.price_usd = novo_valor;
+        getchar();
+
+        printf("Genero (Atual: %c): ", p.gender);
+        scanf(" %c", &novo_gender);
+        p.gender = novo_gender;
+        getchar();
 
         fseek(fpPedidos, pos, SEEK_SET);
         fwrite(&p, sizeof(Pedido), 1, fpPedidos);
+
         printf("Pedido %s alterado com sucesso.\n", order_id);
     } else {
-        printf("Pedido %s nao encontrado para alteraÁao.\n", order_id);
+        printf("Pedido %s nao encontrado para alteracao.\n", order_id);
     }
 }
 
@@ -678,24 +695,51 @@ void alterarJoia(FILE *fpJoias, FILE *idxJoias, const char *product_id) {
         fseek(fpJoias, pos, SEEK_SET);
         fread(&j, sizeof(Joia), 1, fpJoias);
 
-        printf("\n--- ALTERANDO JOIA %s ---\n", j.product_id);
+        char nova_category_id[20];
+        char nova_category_alias[20];
+        char nova_brand_id[20];
         float novo_valor;
+        char novo_gender;
+
+        printf("\n--- ALTERANDO JOIA %s ---\n", j.product_id);
+
+        while(getchar() != '\n');
+
         printf("Valor (Atual: %.2f): ", j.price_usd);
         scanf("%f", &novo_valor);
         j.price_usd = novo_valor;
+        while(getchar() != '\n');
+
+        printf("Categoria ID (Atual: %s): ", j.category_id);
+        scanf("%19s", nova_category_id);
+        strcpy(j.category_id, nova_category_id);
+        getchar();
+
+        printf("Categoria Alias (Atual: %s): ", j.category_alias);
+        scanf("%19s", nova_category_alias);
+        strcpy(j.category_alias, nova_category_alias);
+        getchar();
+
+        printf("Marca (Atual: %s): ", j.brand_id);
+        scanf("%19s", nova_brand_id);
+        strcpy(j.brand_id, nova_brand_id);
+        getchar();
+
+        printf("Genero (Atual: %c): ", j.gender);
+        scanf(" %c", &novo_gender);
+        j.gender = novo_gender;
+        getchar();
 
         fseek(fpJoias, pos, SEEK_SET);
         fwrite(&j, sizeof(Joia), 1, fpJoias);
         printf("Joia %s alterada com sucesso.\n", product_id);
     } else {
-        printf("Joia %s nao encontrada para alteraÁao.\n", product_id);
+        printf("Joia %s nao encontrada para alteracao.\n", product_id);
     }
 }
 
-
-
 // ----------------------------
-// FUN«’ES DE LISTAGEM
+// FUN√á√ïES DE LISTAGEM
 // ----------------------------
 void listarTodosPedidos(FILE *fpPedidos) {
     if (fpPedidos == NULL) {
@@ -711,7 +755,7 @@ void listarTodosPedidos(FILE *fpPedidos) {
     printf("\n--- LISTA DE TODOS OS PEDIDOS ATIVOS ---\n");
     while (fread(&p, sizeof(Pedido), 1, fpPedidos) == 1) {
         if (p.status == 'A') {
-            printf("ID: %-20s | User/Joia: %-20s | Qtd: %-4d | PreÁo: %-8.2f | Data: %-19s | GÍnero: %c\n",
+            printf("ID: %-20s | User/Joia: %-20s | Qtd: %-4d | Pre√ßo: %-8.2f | Data: %-19s | G√™nero: %c\n",
                    p.order_id, p.user_id, p.quantity, p.price_usd, p.date_time, p.gender);
             contador++;
         }
@@ -742,7 +786,7 @@ void listarTodasJoias(FILE *fpJoias) {
     printf("\n--- LISTA DE TODAS AS JOIAS ATIVAS ---\n");
     while (fread(&j, sizeof(Joia), 1, fpJoias) == 1) {
         if (j.status == 'A') {
-            printf("ID: %-20s | Cat ID: %-20s | Alias: %-20s | Marca: %-20s | PreÁo: %-8.2f | GÍnero: %c\n",
+            printf("ID: %-20s | Cat ID: %-20s | Alias: %-20s | Marca: %-20s | Pre√ßo: %-8.2f | G√™nero: %c\n",
                    j.product_id, j.category_id, j.category_alias, j.brand_id, j.price_usd, j.gender);
             contador++;
         }
@@ -755,7 +799,7 @@ void listarTodasJoias(FILE *fpJoias) {
         printf("Total de joias ativas listadas: %d\n", contador);
     }
 
-    fseek(fpJoias, pos_atual, SEEK_SET); // Restaura posiÁ„o original
+    fseek(fpJoias, pos_atual, SEEK_SET);
 }
 
 
@@ -914,7 +958,7 @@ int main() {
             case 0:
                 break;
             default:
-                printf("OpÁ„o inv·lida.\n");
+                printf("Op√ß√£o inv√°lida.\n");
                 break;
         }
     } while (opcao != 0);
